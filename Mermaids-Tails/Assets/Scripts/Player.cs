@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    // variables for gameplay
+    private int maximumHP;
+    private int currentHP;
+    private int currentScore;
+
+    // variables for movement
     public float speed;
     private Vector2 direction;
     private Animator playerAnimator;
@@ -18,15 +24,27 @@ public class Player : MonoBehaviour
     void Update()
     {
         GetInput();
+
+        if (direction.x != 0 || direction.y != 0)
+        {
+            playerAnimator.SetLayerWeight(1, 1);
+        }
+        else
+        {
+            playerAnimator.SetLayerWeight(1, 0);
+        }
+
         MovePlayer();
     }
 
+    // move the player in game
     private void MovePlayer()
     {
         transform.Translate(direction * speed * Time.deltaTime);
         ChangeAnimationDirection(direction);
     }
 
+    // get player input
     private void GetInput()
     {
         direction = Vector2.zero;
@@ -48,6 +66,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Change the direction of animation in the animation class
     private void ChangeAnimationDirection(Vector2 pDirection)
     {
         playerAnimator.SetFloat("XDirection", pDirection.x);
