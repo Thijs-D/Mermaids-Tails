@@ -6,11 +6,8 @@ public class Player : MonoBehaviour
 {
     // variables for gameplay
     public GameObject playerCamera;
-    private int currentScore;
 
     // variables for attack
-    private int maximumHP;
-    private int currentHP;
     public GameObject projectileType;
     private int minimumDamage;
     private int maximumDamage;

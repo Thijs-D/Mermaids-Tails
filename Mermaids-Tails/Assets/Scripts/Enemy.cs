@@ -39,15 +39,34 @@ public class Enemy : MonoBehaviour
         projectileForce = pForce;
     }
 
+    // get damage
     public void GetDamage(int damage)
     {
-        currentHP -= damage;
-        if(currentHP <= 0)
+        if(currentHP - damage <= 0)
         {
+            currentHP = 0;
             Destroy(gameObject);
+        }
+        else
+        {
+            currentHP -= damage;
         }
     }
 
+    // heal character
+    public void HealCharacter(int heal)
+    {
+        if (currentHP + heal > maximumHP)
+        {
+            currentHP = maximumHP;
+        }
+        else
+        {
+            currentHP += heal;
+        }
+    }
+
+    // fight the player with a delay
     IEnumerator FightPlayer()
     {
         yield return new WaitForSeconds(normalAttackCooldown);

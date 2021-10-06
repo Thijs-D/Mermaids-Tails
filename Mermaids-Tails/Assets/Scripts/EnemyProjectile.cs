@@ -22,11 +22,10 @@ public class EnemyProjectile : MonoBehaviour
     {
         if (collision.tag != "Enemy" && collision.name != "EnemyProjectile(Clone)")
         {
-            if (collision.GetComponent<Enemy>())
+            if (collision.GetComponent<Player>())
             {
-                collision.GetComponent<Enemy>().GetDamage(damage);
+                GameStats.gameStatsRef.GetDamage(damage);
             }
-            Debug.Log(collision.name);
             Destroy(gameObject);
         }
     }
