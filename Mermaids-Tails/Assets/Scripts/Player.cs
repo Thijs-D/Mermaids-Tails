@@ -9,6 +9,12 @@ public class Player : MonoBehaviour
     private int currentHP;
     private int currentScore;
 
+    // variables for attack
+    public GameObject projectileType;
+    private float minimumDamage;
+    private float maximumDamage;
+    private float projectileForce;
+
     // variables for movement
     public float speed;
     private Vector2 direction;
@@ -18,6 +24,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
+        setWeapon(10, 20, 0.05f);
     }
 
     // Update is called once per frame
@@ -35,6 +42,23 @@ public class Player : MonoBehaviour
         }
 
         MovePlayer();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject currentProjectile = Instantiate(projectileType, transform.position, Quaternion.identity);
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 currentPosition = transform.position;
+            Vector2 projectileDirection = (mousePosition - currentPosition).normalized;
+            currentProjectile.GetComponent<Rigidbody2D>().velocity = projectileDirection * projectileForce;
+            currentProjectile.GetComponent<Projectile>().damage = Random.Range(minimumDamage, maximumDamage);
+        }
+    }
+
+    private void setWeapon(float pMin, float pMax, float pForce)
+    {
+        minimumDamage = pMin;
+        maximumDamage = pMax;
+        projectileForce = pForce;
     }
 
     // move the player in game
