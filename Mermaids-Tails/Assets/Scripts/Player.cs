@@ -5,14 +5,15 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     // variables for gameplay
-    private int maximumHP;
-    private int currentHP;
+    public GameObject playerCamera;
     private int currentScore;
 
     // variables for attack
+    private int maximumHP;
+    private int currentHP;
     public GameObject projectileType;
-    private float minimumDamage;
-    private float maximumDamage;
+    private int minimumDamage;
+    private int maximumDamage;
     private float projectileForce;
 
     // variables for movement
@@ -24,7 +25,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
-        setWeapon(10, 20, 0.05f);
+        setWeapon(10, 20, 0.1f);
     }
 
     // Update is called once per frame
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
     {
         GetInput();
 
+        // if player is moving, the moving animation will displayed
         if (direction.x != 0 || direction.y != 0)
         {
             playerAnimator.SetLayerWeight(1, 1);
@@ -43,6 +45,7 @@ public class Player : MonoBehaviour
 
         MovePlayer();
 
+        // 0 left click, 1 right click, 2 middle click
         if (Input.GetMouseButtonDown(0))
         {
             GameObject currentProjectile = Instantiate(projectileType, transform.position, Quaternion.identity);
@@ -54,7 +57,16 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void setWeapon(float pMin, float pMax, float pForce)
+    // Updated ist called fixed by time
+    private void FixedUpdate()
+    {
+        // make a 3D Vector of Player Position and Z-Camera Position
+        Vector3 currentCameraPosition = new Vector3(transform.position.x, transform.position.y, playerCamera.transform.position.z);
+        playerCamera.transform.position = currentCameraPosition;
+    }
+
+    // set the player weapon ans weapon stats
+    private void setWeapon(int pMin, int pMax, float pForce)
     {
         minimumDamage = pMin;
         maximumDamage = pMax;
