@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Enemy : MonoBehaviour
     private int currentHP;
     public GameObject projectileType;
     private GameObject playerRef;
+    public GameObject healthbar;
+    public Slider healthSlider;
     private int minimumDamage;
     private int maximumDamage;
     private float projectileForce;
@@ -42,6 +45,7 @@ public class Enemy : MonoBehaviour
     // get damage
     public void GetDamage(int damage)
     {
+        healthbar.SetActive(true);
         if(currentHP - damage <= 0)
         {
             currentHP = 0;
@@ -51,11 +55,13 @@ public class Enemy : MonoBehaviour
         {
             currentHP -= damage;
         }
+        healthSlider.value = getProcentualHealth();
     }
 
     // heal character
     public void HealCharacter(int heal)
     {
+        healthbar.SetActive(true);
         if (currentHP + heal > maximumHP)
         {
             currentHP = maximumHP;
@@ -64,6 +70,12 @@ public class Enemy : MonoBehaviour
         {
             currentHP += heal;
         }
+        healthSlider.value = getProcentualHealth();
+    }
+
+    private float getProcentualHealth()
+    {
+        return ((float)currentHP / (float)maximumHP);
     }
 
     // fight the player with a delay

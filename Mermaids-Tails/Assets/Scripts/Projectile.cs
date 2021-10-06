@@ -26,7 +26,6 @@ public class Projectile : MonoBehaviour
             {
                 collision.GetComponent<Enemy>().GetDamage(damage);
             }
-            Debug.Log(collision.name);
             Destroy(gameObject);
         }
     }
