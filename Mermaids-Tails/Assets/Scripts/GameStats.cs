@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameStats : MonoBehaviour
 {
@@ -9,7 +10,14 @@ public class GameStats : MonoBehaviour
     private GameObject playerRef;
     private int maximumHP;
     private int currentHP;
+    private int maximumMP;
+    private int currentMP;
     private int currentScore;
+    private int coins;
+    public Text healthText;
+    public Text skillText;
+    public Slider healthSlider;
+    public Slider skillSlider;
 
     private void Awake()
     {
@@ -29,7 +37,13 @@ public class GameStats : MonoBehaviour
     {
         playerRef = GameObject.Find("Player");
         maximumHP = 100;
+        maximumMP = 10;
         currentHP = maximumHP;
+        currentMP = maximumMP;
+        healthSlider.value = getProcentualHealth();
+        skillSlider.value = getProcentualPower();
+        healthText.text = currentHP + "/" + maximumHP;
+        skillText.text = currentMP + "/" + maximumMP;
     }
 
     // Update is called once per frame
@@ -50,6 +64,8 @@ public class GameStats : MonoBehaviour
         {
             currentHP -= damage;
         }
+        healthSlider.value = getProcentualHealth();
+        healthText.text = currentHP + "/" + maximumHP;
     }
     
     // heal character
@@ -63,5 +79,23 @@ public class GameStats : MonoBehaviour
         {
             currentHP += heal;
         }
+        healthSlider.value = getProcentualHealth();
+    }
+
+    // return the procentual health with 1 -> 100% and 0 -> 0% and 0.5 -> 50%
+    private float getProcentualHealth()
+    {
+        return ((float)currentHP / (float)maximumHP);
+    }
+
+    // return the procentual power with 1 -> 100% and 0 -> 0% and 0.5 -> 50%
+    private float getProcentualPower()
+    {
+        return ((float)currentMP / (float)maximumMP);
+    }
+
+    public void addCoins(int amount)
+    {
+        coins += amount;
     }
 }

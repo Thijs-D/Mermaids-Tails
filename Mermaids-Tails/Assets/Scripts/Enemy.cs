@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    // other variables
+    public GameObject loot;
+
     // variables for attack
     private int maximumHP;
     private int currentHP;
@@ -49,6 +52,7 @@ public class Enemy : MonoBehaviour
         if(currentHP - damage <= 0)
         {
             currentHP = 0;
+            Instantiate(loot, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         else

@@ -14,7 +14,10 @@ public class Player : MonoBehaviour
     private float projectileForce;
 
     // variables for movement
+    private enum Facing { Up, Down, Left, Right };
+    private Facing currentDirection = Facing.Down;
     public float speed;
+    private float dash;
     private Vector2 direction;
     private Animator playerAnimator;
 
@@ -23,6 +26,7 @@ public class Player : MonoBehaviour
     {
         playerAnimator = GetComponent<Animator>();
         setWeapon(10, 20, 0.1f);
+        dash = 0.01f;
     }
 
     // Update is called once per frame
@@ -84,18 +88,43 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             direction += Vector2.up;
+            currentDirection = Facing.Up;
         }
         else if (Input.GetKey(KeyCode.S))
         {
             direction += Vector2.down;
+            currentDirection = Facing.Down;
         }
         else if (Input.GetKey(KeyCode.A))
         {
             direction += Vector2.left;
+            currentDirection = Facing.Left;
         }
         else if (Input.GetKey(KeyCode.D))
         {
             direction += Vector2.right;
+            currentDirection = Facing.Right;
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Vector2 targetPosition = Vector2.zero;
+            if (currentDirection == Facing.Up)
+            {
+                targetPosition.y = 1;
+            } 
+            else if (currentDirection == Facing.Down)
+            {
+                targetPosition.y = -1;
+            }
+            else if (currentDirection == Facing.Left)
+            {
+                targetPosition.x = -1;
+            }
+            else if (currentDirection == Facing.Right)
+            {
+                targetPosition.x = 1;
+            }
+            transform.Translate(targetPosition * dash);
         }
     }
 
