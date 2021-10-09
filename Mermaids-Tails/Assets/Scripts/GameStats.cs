@@ -14,6 +14,7 @@ public class GameStats : MonoBehaviour
     private int currentMP;
     private int currentScore;
     private int coins;
+    public Text coinText;
     public Text healthText;
     public Text skillText;
     public Slider healthSlider;
@@ -97,5 +98,6 @@ public class GameStats : MonoBehaviour
     public void addCoins(int amount)
     {
         coins += amount;
+        coinText.text = "Coins: " + coins;
     }
 }

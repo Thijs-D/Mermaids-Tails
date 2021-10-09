@@ -20,7 +20,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.name != "Player" && collision.name != "Projectile(Clone)")
+        if (collision.tag != "Player" && collision.tag != "Projectile" && collision.tag != "Item")
         {
             if (collision.GetComponent<Enemy>())
             {

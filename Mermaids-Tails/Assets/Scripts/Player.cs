@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
-        setWeapon(10, 20, 0.1f);
+        setWeapon(10, 20, 0.5f);
         dash = 0.01f;
     }
 
