@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8228490605028422114}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 0}
   projectileType: {fileID: 6035508524002509169, guid: 05303fa3338f0d646a9db6986ba25594, type: 3}
-  speed: 1
+  speed: 3
 --- !u!50 &2009429809
 Rigidbody2D:
   serializedVersion: 4

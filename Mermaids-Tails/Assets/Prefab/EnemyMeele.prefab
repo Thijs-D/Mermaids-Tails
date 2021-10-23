@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 900082179937864502}
   - component: {fileID: 900082179937864501}
   - component: {fileID: 900082179937864500}
-  - component: {fileID: 6065326447486131780}
+  - component: {fileID: 8659398355400237251}
+  - component: {fileID: 8106420019632603554}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: EnemyMeele
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 900082179937864457}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children:
   - {fileID: 722307065872544850}
   m_Father: {fileID: 0}
@@ -132,7 +133,29 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.17}
   m_EdgeRadius: 0
---- !u!114 &6065326447486131780
+--- !u!195 &8659398355400237251
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900082179937864457}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.1
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.21
+  m_BaseOffset: 0.105
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &8106420019632603554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,7 +164,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 900082179937864457}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 256dc1a643c07db4191ef7f8ddde04f8, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b50953bc726c9546b145c628f53b211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   loot: {fileID: 8043931288934035441, guid: b5d9b704494de3345b4e375a9207849e, type: 3}
