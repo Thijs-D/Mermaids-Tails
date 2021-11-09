@@ -11,9 +11,9 @@ public class Player : MonoBehaviour
 
     // variables for attack
     public GameObject projectileType;
-    private int minimumDamage;
-    private int maximumDamage;
-    private float projectileForce;
+    public int minimumDamage;
+    public int maximumDamage;
+    public float projectileForce;
 
     // variables for movement
     private enum Facing { Up, Down, Left, Right };
@@ -82,11 +82,12 @@ public class Player : MonoBehaviour
     }
 
     // set the player weapon ans weapon stats
-    private void setWeapon(int pMin, int pMax, float pForce)
+    public void setWeapon(int pMin, int pMax, float pForce)
     {
         minimumDamage = pMin;
         maximumDamage = pMax;
         projectileForce = pForce;
+        Debug.Log(minimumDamage);
     }
 
     // move the player in game

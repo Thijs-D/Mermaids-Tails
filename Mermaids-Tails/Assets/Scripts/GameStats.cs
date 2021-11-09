@@ -31,12 +31,12 @@ public class GameStats : MonoBehaviour
             gameStatsRef = this;
         }
         DontDestroyOnLoad(this);
+        playerRef = GameObject.Find("Player");
     }
 
     // Start is called before the first frame update
     void Start()
-    {
-        playerRef = GameObject.Find("Player");
+    { 
         maximumHP = 100;
         maximumMP = 10;
         currentHP = maximumHP;
@@ -51,6 +51,11 @@ public class GameStats : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public GameObject getPlayer()
+    {
+        return playerRef;
     }
 
     // get damage
@@ -98,6 +103,17 @@ public class GameStats : MonoBehaviour
     public void addCoins(int amount)
     {
         coins += amount;
+        coinText.text = "Coins: " + coins;
+    }
+    
+    public int getCoins()
+    {
+        return coins;
+    }
+
+    public void reduceCoins(int amount)
+    {
+        coins -= amount;
         coinText.text = "Coins: " + coins;
     }
 }
