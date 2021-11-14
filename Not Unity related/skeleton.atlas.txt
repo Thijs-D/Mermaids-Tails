@@ -1,9 +1,0 @@
-skeleton.png
-size:454,215
-filter:Linear,Linear
-pma:true
-Hat
-bounds:2,2,364,211
-hat1
-bounds:368,92,121,84
-rotate:90
