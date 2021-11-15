@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyRanged : Enemy
 {
-    protected EnemyRanged() : base(25,4,2,5,3.5f)
+    protected EnemyRanged() : base(false, 25,4,2,5,3.5f)
     {
         
     }

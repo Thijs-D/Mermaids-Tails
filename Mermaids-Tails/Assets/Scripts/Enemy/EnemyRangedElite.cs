@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyRangedElite : Enemy
 {
-    protected EnemyRangedElite() : base(100, 4, 3, 7, 5f)
+    protected EnemyRangedElite() : base(true, 100, 4, 3, 7, 5f)
     {
 
     }

@@ -23,16 +23,16 @@ public class Spawner : MonoBehaviour
             y = Random.Range(-0.9f, 0.9f);
             spawnPoint.x += x;
             spawnPoint.y += y;
-            int j = Random.Range(0, 7);
-            if (j < 3)
+            int j = Random.Range(0, 23);
+            if (j < 20 && j%2 == 0)
             {
                 Instantiate(enemyRanged, spawnPoint, Quaternion.identity);
             }
-            else if (j < 6)
+            else if (j < 20 && j % 2 != 0)
             {
                 Instantiate(enemyMeele, spawnPoint, Quaternion.identity);
             }
-            else if (j < 7)
+            else if (j < 21)
             {
                 Instantiate(enemyRangedElite, spawnPoint, Quaternion.identity);
             }

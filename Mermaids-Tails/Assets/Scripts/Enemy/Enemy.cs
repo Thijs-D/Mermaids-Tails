@@ -9,13 +9,16 @@ public class Enemy : MonoBehaviour
     // other variables
     public GameObject loot;
     protected bool rangedEnemny;
+    protected bool elite;
     protected float walkRange = 2;
     protected int worldBorder = 20;
     protected NavMeshAgent agent;
 
     // variables for attack
+    protected bool tryToAttack;
     protected bool doAttack;
     protected bool seePlayer;
+    protected bool isDead;
     protected readonly int maximumHP;
     protected int currentHP;
     public GameObject projectileType;
@@ -28,8 +31,9 @@ public class Enemy : MonoBehaviour
     protected float normalAttackCooldown;
 
     // construct an ranged enemy
-    protected Enemy(int pHP, int pAttackSpeed, int pMinDmg, int pMaxDmg, float pProjectileForce)
+    protected Enemy(bool pElite, int pHP, int pAttackSpeed, int pMinDmg, int pMaxDmg, float pProjectileForce)
     {
+        elite = pElite;
         maximumHP = pHP;
         currentHP = maximumHP;
         normalAttackCooldown = pAttackSpeed;
@@ -40,8 +44,9 @@ public class Enemy : MonoBehaviour
     }
 
     // construct an meele enemy
-    protected Enemy(int pHP, int pAttackSpeed, int pMinDmg, int pMaxDmg)
+    protected Enemy(bool pElite, int pHP, int pAttackSpeed, int pMinDmg, int pMaxDmg)
     {
+        elite = pElite;
         maximumHP = pHP;
         currentHP = maximumHP;
         normalAttackCooldown = pAttackSpeed;
@@ -62,7 +67,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-        if (!doAttack)
+        if (!tryToAttack)
         {
             if (rangedEnemny)
             {
@@ -78,7 +83,7 @@ public class Enemy : MonoBehaviour
         {
             agent.SetDestination(GetRandomPoint(transform, walkRange));
         }
-        else if (seePlayer)
+        else if (seePlayer && playerRef != null)
         {
             agent.SetDestination(playerRef.transform.position);
         }
@@ -88,18 +93,37 @@ public class Enemy : MonoBehaviour
     // get damage
     public void GetDamage(int damage)
     {
-        healthbar.SetActive(true);
-        if(currentHP - damage <= 0)
+        if (!isDead)
         {
-            currentHP = 0;
-            Instantiate(loot, transform.position, Quaternion.identity);
-            Destroy(gameObject);
-        }
-        else
-        {
-            currentHP -= damage;
-        }
-        healthSlider.value = getProcentualHealth();
+            healthbar.SetActive(true);
+            if (currentHP - damage <= 0)
+            {
+                currentHP = 0;
+                isDead = true;
+                if (!rangedEnemny)
+                {
+                    if (elite)
+                    {
+
+                    }
+                    else
+                    {
+                        GetComponentInChildren<EnemyMeele>().currentState = EnemyMeele.states.DEATH;
+                        GetComponentInChildren<EnemyMeele>().setCharacterState();
+                    }
+                }
+                else
+                {
+                    Instantiate(loot, transform.position, Quaternion.identity);
+                    Destroy(gameObject);
+                }
+            }
+            else
+            {
+                currentHP -= damage;
+            }
+            healthSlider.value = getProcentualHealth();
+        }        
     }
 
     // heal character
@@ -126,7 +150,7 @@ public class Enemy : MonoBehaviour
     // fight the player with a ranged attack
     IEnumerator FightPlayerRanged()
     {
-        doAttack = true;
+        tryToAttack = true;
         yield return new WaitForSeconds(normalAttackCooldown);
         agent.SetDestination(GetRandomPoint(transform, walkRange));
         if (playerRef != null)
@@ -137,13 +161,13 @@ public class Enemy : MonoBehaviour
             Vector2 projectileDirection = (currentPlayerPosition - currentPosition).normalized;
             currentProjectile.GetComponent<Rigidbody2D>().velocity = projectileDirection * projectileForce;
             currentProjectile.GetComponent<EnemyProjectile>().damage = Random.Range(minimumDamage, maximumDamage);
-            doAttack = false;
+            tryToAttack = false;
         }
     }
 
     IEnumerator FightPlayerMeele()
     {
-        doAttack = true;
+        tryToAttack = true;
         yield return new WaitForSeconds(normalAttackCooldown);
         if (playerRef != null)
         {
@@ -153,18 +177,39 @@ public class Enemy : MonoBehaviour
             if (dist < minDist)
             {
                 seePlayer = true;
-                if (dist < fightDist)
+                if (dist < fightDist && !doAttack)
                 {
-                    Debug.Log("Hi");
+                    doAttack = true;
+                    if (!elite)
+                    {
+                        GetComponentInChildren<EnemyMeele>().currentState = EnemyMeele.states.FIGHT;
+                        GetComponentInChildren<EnemyMeele>().setCharacterState();
+                        Debug.Log("Normal_Melee");
+                    }
+                    else
+                    {
+                        GetComponentInChildren<EnemyMeeleElite>().currentState = EnemyMeeleElite.states.FIGHT;
+                        GetComponentInChildren<EnemyMeeleElite>().setCharacterState();
+                    }                    
                     GameStats.gameStatsRef.GetDamage(Random.Range(minimumDamage, maximumDamage));
                 }
             }
             else
             {
+                if (!elite)
+                {
+                    GetComponentInChildren<EnemyMeele>().currentState = EnemyMeele.states.WALK;
+                    GetComponentInChildren<EnemyMeele>().setCharacterState();
+                }
+                else
+                {
+                    GetComponentInChildren<EnemyMeeleElite>().currentState = EnemyMeeleElite.states.WALK;
+                    GetComponentInChildren<EnemyMeeleElite>().setCharacterState();
+                }               
                 seePlayer = false;
             }
-            doAttack = false;
         }
+        tryToAttack = false;
     }
 
     private bool RandomPoint(Vector3 pCenter, float pRange, out Vector3 pResult)
