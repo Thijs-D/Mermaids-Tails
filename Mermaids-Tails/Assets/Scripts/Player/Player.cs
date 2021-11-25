@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Spine.Unity;
 
 public class Player : MonoBehaviour
 {
-
     // variables for gameplay
     public GameObject playerCamera;
+    public SkeletonAnimation sk;
+    public AnimationReferenceAsset idle, walking, fightMelee, fightRanged, death;
+    public enum states { IDLE, WALK, FIGHTMELEE, FIGHTRANGED, DEATH };
+    public states currentState;
 
     // variables for attack
     public GameObject projectileType;
@@ -15,18 +19,13 @@ public class Player : MonoBehaviour
     public int maximumDamage;
     public float projectileForce;
 
-    // variables for movement
-    private enum Facing { Up, Down, Left, Right };
-    private Facing currentDirection = Facing.Down;
     public float speed;
     private float dash;
     private Vector2 direction;
-    private Animator playerAnimator;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerAnimator = GetComponent<Animator>();
         setWeapon(10, 20, 2.5f);
         dash = 0.01f;
     }
@@ -34,15 +33,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if player is moving, the moving animation will displayed
-        if (direction.x != 0 || direction.y != 0)
-        {
-            playerAnimator.SetLayerWeight(1, 1);
-        }
-        else
-        {
-            playerAnimator.SetLayerWeight(1, 0);
-        }
         MovePlayer();
     }
 
@@ -77,7 +67,7 @@ public class Player : MonoBehaviour
     {
         if (value.started)
         {
-            transform.Translate(direction * speed * dash * Time.deltaTime);
+            transform.Translate(dash * speed * Time.deltaTime * direction);
         }
     }
 
@@ -94,13 +84,60 @@ public class Player : MonoBehaviour
     private void MovePlayer()
     {
         transform.Translate(direction * speed * Time.deltaTime);
-        ChangeAnimationDirection(direction);
     }
 
-    // Change the direction of animation in the animation class
-    private void ChangeAnimationDirection(Vector2 pDirection)
+    // set character animation
+    private void setAnimation(AnimationReferenceAsset pAnimation, bool pLoop, float pTimescale)
     {
-        playerAnimator.SetFloat("XDirection", pDirection.x);
-        playerAnimator.SetFloat("YDirection", pDirection.y);
+        Spine.TrackEntry ae = sk.state.SetAnimation(0, pAnimation, pLoop);
+        ae.TimeScale = pTimescale;
+        ae.Complete += Ae_Complete;
+    }
+
+    // do something after animation completes
+    private void Ae_Complete(Spine.TrackEntry trackEntry)
+    {
+        if (currentState == states.FIGHTMELEE || currentState == states.FIGHTRANGED)
+        {
+            currentState = states.WALK;
+            setCharacterState();
+        }
+        else if (currentState == states.DEATH)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    // set the state and animation of the character
+    public void setCharacterState()
+    {
+        switch (currentState)
+        {
+            case states.WALK:
+                {
+                    setAnimation(walking, true, 1f);
+                    break;
+                }
+            case states.FIGHTMELEE:
+                {
+                    setAnimation(fightMelee, false, 1f);
+                    break;
+                }
+            case states.FIGHTRANGED:
+                {
+                    setAnimation(fightRanged, false, 1f);
+                    break;
+                }
+            case states.DEATH:
+                {
+                    setAnimation(death, false, 1f);
+                    break;
+                }
+            default:
+                {
+                    setAnimation(idle, true, 1f);
+                    break;
+                }
+        }
     }
 }
