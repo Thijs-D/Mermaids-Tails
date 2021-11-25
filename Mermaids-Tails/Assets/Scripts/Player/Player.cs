@@ -6,34 +6,50 @@ using Spine.Unity;
 
 public class Player : MonoBehaviour
 {
-    // variables for gameplay
+    // public variables
     public GameObject playerCamera;
     public SkeletonAnimation sk;
     public AnimationReferenceAsset idle, walking, fightMelee, fightRanged, death;
     public enum states { IDLE, WALK, FIGHTMELEE, FIGHTRANGED, DEATH };
     public states currentState;
-
-    // variables for attack
     public GameObject projectileType;
-    public int minimumDamage;
-    public int maximumDamage;
-    public float projectileForce;
 
-    public float speed;
+    // private variables
+    private int minimumDamage;
+    private int maximumDamage;
+    private float projectileForce;
+    private bool doAttack = false;
+    private float speed;
     private float dash;
     private Vector2 direction;
 
     // Start is called before the first frame update
     void Start()
     {
-        setWeapon(10, 20, 2.5f);
+        setWeapon(10, 20, 3f);
         dash = 0.01f;
+        speed = 4;
+        currentState = states.IDLE;
+        setCharacterState();
     }
 
     // Update is called once per frame
     void Update()
     {
-        MovePlayer();
+        if (direction != Vector2.zero && !doAttack)
+        {
+            if (currentState != states.WALK)
+            {
+                currentState = states.WALK;
+                setCharacterState();
+            }
+            MovePlayer();            
+        }
+        else if(currentState != states.IDLE && !doAttack)
+        {
+            currentState = states.IDLE;
+            setCharacterState();
+        } 
     }
 
     // Updated ist called fixed by time
@@ -53,13 +69,15 @@ public class Player : MonoBehaviour
     {
         if (value.started)
         {
+            //doAttack = true;
             GameObject currentProjectile = Instantiate(projectileType, transform.position, Quaternion.identity);
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             Vector2 currentPosition = transform.position;
             Vector2 projectileDirection = (mousePosition - currentPosition).normalized;
             currentProjectile.GetComponent<Rigidbody2D>().velocity = projectileDirection * projectileForce;
             currentProjectile.GetComponent<Projectile>().damage = Random.Range(minimumDamage, maximumDamage);
-            // Do attack animation
+            //currentState = states.FIGHTRANGED;
+            //setCharacterState();
         }
     }
 
@@ -83,7 +101,22 @@ public class Player : MonoBehaviour
     // move the player in game
     private void MovePlayer()
     {
-        transform.Translate(direction * speed * Time.deltaTime);
+            transform.Translate(direction * speed * Time.deltaTime);
+    }
+
+    public int getMinDmg()
+    {
+        return minimumDamage;
+    }
+
+    public int getMaxDmg()
+    {
+        return maximumDamage;
+    }
+
+    public float getProjectileForce()
+    {
+        return projectileForce;
     }
 
     // set character animation
@@ -99,8 +132,9 @@ public class Player : MonoBehaviour
     {
         if (currentState == states.FIGHTMELEE || currentState == states.FIGHTRANGED)
         {
-            currentState = states.WALK;
+            currentState = states.IDLE;
             setCharacterState();
+            doAttack = false;
         }
         else if (currentState == states.DEATH)
         {

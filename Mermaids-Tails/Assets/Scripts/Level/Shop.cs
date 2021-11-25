@@ -25,9 +25,10 @@ public class Shop : MonoBehaviour
     {
         if (collision.GetComponent<Player>() && GameStats.gameStatsRef.getCoins() >= cost)
         {
-            minDmg = GameStats.gameStatsRef.getPlayer().GetComponent<Player>().minimumDamage * 2;
+            GameStats.gameStatsRef.reduceCoins(5);
+            minDmg = GameStats.gameStatsRef.getPlayer().GetComponent<Player>().getMinDmg() * 2;
             maxDmg = minDmg + 5;
-            projectileSpeed = GameStats.gameStatsRef.getPlayer().GetComponent<Player>().projectileForce * 2;
+            projectileSpeed = GameStats.gameStatsRef.getPlayer().GetComponent<Player>().getProjectileForce() * 2;
             if (isBanana)
             {
                 UpgradeBanana();

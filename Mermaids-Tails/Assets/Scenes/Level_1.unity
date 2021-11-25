@@ -1567,17 +1567,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4297649446183568806, guid: b35366135fddf22469069208869ef6de, type: 3}
-      propertyPath: speed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4297649446183568806, guid: b35366135fddf22469069208869ef6de, type: 3}
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 1897988454}
-    - target: {fileID: 4297649446183568806, guid: b35366135fddf22469069208869ef6de, type: 3}
-      propertyPath: projectileType
-      value: 
-      objectReference: {fileID: 4320798624573840168, guid: b880f1e91ab73a74caea2ae5040f8162, type: 3}
     - target: {fileID: 4650238656272298566, guid: b35366135fddf22469069208869ef6de, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1622,10 +1614,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5986108663506326139, guid: b35366135fddf22469069208869ef6de, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7728597353072023472, guid: b35366135fddf22469069208869ef6de, type: 3}
       propertyPath: m_Name
-      value: Spine (Mermaid)
+      value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8368607806089629716, guid: b35366135fddf22469069208869ef6de, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1897988456}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b35366135fddf22469069208869ef6de, type: 3}
 --- !u!1 &1443854772
