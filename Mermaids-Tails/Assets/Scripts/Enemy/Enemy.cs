@@ -67,7 +67,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-        if (!tryToAttack)
+        if (!tryToAttack && !isDead)
         {
             if (rangedEnemny)
             {
@@ -79,11 +79,11 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        if (!agent.hasPath && !seePlayer)
+        if (!agent.hasPath && !seePlayer && !isDead)
         {
             agent.SetDestination(GetRandomPoint(transform, walkRange));
         }
-        else if (seePlayer && playerRef != null)
+        else if (seePlayer && playerRef != null && !isDead)
         {
             agent.SetDestination(playerRef.transform.position);
         }
@@ -104,7 +104,8 @@ public class Enemy : MonoBehaviour
                 {
                     if (elite)
                     {
-
+                        GetComponentInChildren<EnemyMeeleElite>().currentState = EnemyMeeleElite.states.DEATH;
+                        GetComponentInChildren<EnemyMeeleElite>().setCharacterState();
                     }
                     else
                     {

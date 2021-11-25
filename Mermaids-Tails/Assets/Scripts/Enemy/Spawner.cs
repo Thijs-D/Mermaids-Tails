@@ -12,6 +12,7 @@ public class Spawner : MonoBehaviour
     private Vector3 spawnPoint;
     private float x;
     private float y;
+    private string[] allEnemys = new string[10];
 
     // Start is called before the first frame update
     void Start()
@@ -27,18 +28,29 @@ public class Spawner : MonoBehaviour
             if (j < 20 && j%2 == 0)
             {
                 Instantiate(enemyRanged, spawnPoint, Quaternion.identity);
+                allEnemys[i] = "enemyRanged" + "\n";
             }
             else if (j < 20 && j % 2 != 0)
             {
                 Instantiate(enemyMeele, spawnPoint, Quaternion.identity);
+                allEnemys[i] = "enemyMelee" + "\n";
             }
             else if (j < 21)
             {
                 Instantiate(enemyRangedElite, spawnPoint, Quaternion.identity);
+                allEnemys[i] = "enemyRangedElite" + "\n";
             }
             else
             {
                 Instantiate(enemyMeeleElite, spawnPoint, Quaternion.identity);
+                allEnemys[i] = "enemyMeleeElite" + "\n";
+            }
+            if (i + 2 == amount)
+            {
+                foreach(string s in allEnemys)
+                {
+                    Debug.Log(s);
+                }
             }
         }
     }
