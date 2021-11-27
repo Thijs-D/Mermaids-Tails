@@ -43,7 +43,11 @@ public class EnemyMeele : Enemy
     // do something after animation completes
     private void Ae_Complete(Spine.TrackEntry trackEntry)
     {
-        if (currentState == states.FIGHT)
+        if (isDead && currentState != states.DEATH)
+        {
+            currentState = states.DEATH;
+        }
+        if (currentState == states.FIGHT && !isDead)
         {
             currentState = states.WALK;
             setCharacterState();

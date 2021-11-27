@@ -135,7 +135,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 2.7905385, y: -1.6442881}
@@ -163,15 +163,15 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 11
+  m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0
+  m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &4297649446183568806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 0}
+  rb: {fileID: -6392171126227852346}
   sk: {fileID: 3111409355018114042}
   idle: {fileID: 11400000, guid: d827e1de275bfc348816e9295e4283ab, type: 2}
   walking: {fileID: 11400000, guid: 3d8c2ffb7ae1ff448a7cf3b1c821881a, type: 2}
@@ -193,10 +194,6 @@ MonoBehaviour:
   death: {fileID: 11400000, guid: 06e6722002eb43c4fa2b41f1c867f54f, type: 2}
   currentState: 0
   projectileType: {fileID: 3523973136585348724, guid: c2254826b90fb9443a16f4a5488903a3, type: 3}
-  minimumDamage: 0
-  maximumDamage: 0
-  projectileForce: 0
-  speed: 4
 --- !u!114 &8368607806089629716
 MonoBehaviour:
   m_ObjectHideFlags: 0
