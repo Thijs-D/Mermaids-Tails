@@ -95,7 +95,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2618880405158172571, guid: 2ed9e2e0044c9384181b31c8b2cb0cd2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -171,6 +171,13 @@ MonoBehaviour:
   projectileType: {fileID: 5367210091496428964, guid: 29ef06cbbedc6284a8029c2f4d3f3f40, type: 3}
   healthbar: {fileID: 9102983057274199434}
   healthSlider: {fileID: 8879646965078102846}
+  sk: {fileID: 0}
+  idle: {fileID: 0}
+  walking: {fileID: 0}
+  fight: {fileID: 0}
+  block: {fileID: 0}
+  death: {fileID: 0}
+  currentState: 0
 --- !u!1 &1960166939192528795
 GameObject:
   m_ObjectHideFlags: 0

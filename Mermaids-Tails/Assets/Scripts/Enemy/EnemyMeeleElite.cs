@@ -10,7 +10,7 @@ public class EnemyMeeleElite : Enemy
     public enum states { IDLE, WALK, FIGHT, BLOCK, DEATH };
     public states currentState;
 
-    protected EnemyMeeleElite() : base(true, 200, 4, 5, 10)
+    protected EnemyMeeleElite() : base(true, 300, 5, 10, 20)
     {
 
     }
@@ -43,6 +43,10 @@ public class EnemyMeeleElite : Enemy
     // do something after animation completes
     private void Ae_Complete(Spine.TrackEntry trackEntry)
     {
+        if (isDead && currentState != states.DEATH)
+        {
+            currentState = states.DEATH;
+        }
         if (currentState == states.FIGHT)
         {
             currentState = states.WALK;

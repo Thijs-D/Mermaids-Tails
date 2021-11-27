@@ -95,7 +95,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2618880405158172571, guid: 2ed9e2e0044c9384181b31c8b2cb0cd2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -146,11 +146,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 0}
+  sk: {fileID: 0}
+  idle: {fileID: 0}
+  walking: {fileID: 0}
+  fightMelee: {fileID: 0}
+  fightRanged: {fileID: 0}
+  death: {fileID: 0}
+  currentState: 0
   projectileType: {fileID: 6035508524002509169, guid: 05303fa3338f0d646a9db6986ba25594, type: 3}
-  minimumDamage: 0
-  maximumDamage: 0
-  projectileForce: 0
-  speed: 3
 --- !u!50 &2009429809
 Rigidbody2D:
   serializedVersion: 4

@@ -8,6 +8,7 @@ TagManager:
   - Projectile
   - EnemyProjectile
   - Item
+  - Wall
   layers:
   - Default
   - TransparentFX

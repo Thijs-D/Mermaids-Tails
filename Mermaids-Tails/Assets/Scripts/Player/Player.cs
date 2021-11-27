@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     // public variables
     public GameObject playerCamera;
+    public Rigidbody2D rb;
     public SkeletonAnimation sk;
     public AnimationReferenceAsset idle, walking, fightMelee, fightRanged, death;
     public enum states { IDLE, WALK, FIGHTMELEE, FIGHTRANGED, DEATH };
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         setWeapon(10, 20, 3f);
-        dash = 0.01f;
+        dash = 0.3f;
         speed = 4;
         currentState = states.IDLE;
         setCharacterState();
@@ -42,14 +43,14 @@ public class Player : MonoBehaviour
             {
                 currentState = states.WALK;
                 setCharacterState();
-            }
-            MovePlayer();            
+            }         
         }
         else if(currentState != states.IDLE && !doAttack)
         {
             currentState = states.IDLE;
             setCharacterState();
-        } 
+        }
+        MovePlayer();
     }
 
     // Updated ist called fixed by time
@@ -85,7 +86,7 @@ public class Player : MonoBehaviour
     {
         if (value.started)
         {
-            transform.Translate(dash * speed * Time.deltaTime * direction);
+            transform.Translate(dash * speed * direction);
         }
     }
 
@@ -101,7 +102,8 @@ public class Player : MonoBehaviour
     // move the player in game
     private void MovePlayer()
     {
-            transform.Translate(direction * speed * Time.deltaTime);
+        //transform.Translate(speed * Time.deltaTime * direction);
+        rb.velocity = new Vector2(direction.x * 5, direction.y * 5);
     }
 
     public int getMinDmg()
@@ -117,6 +119,22 @@ public class Player : MonoBehaviour
     public float getProjectileForce()
     {
         return projectileForce;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Wall")
+        {
+            //direction = Vector2.zero;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Wall")
+        {
+            //direction = Vector2.zero;
+        }
     }
 
     // set character animation
