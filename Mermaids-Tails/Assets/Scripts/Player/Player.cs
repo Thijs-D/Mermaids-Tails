@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
         {
             if (!doAttack && !isDead)
             {
-                Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, 1.5f);
+                Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, 2f);
                 foreach (Collider2D collision in cols)
                 {
                     if (collision.CompareTag("Enemy"))
