@@ -100,6 +100,7 @@ public class Enemy : MonoBehaviour
             {
                 currentHP = 0;
                 isDead = true;
+                GameStats.gameStatsRef.IncreaseScore(elite);
                 if (!rangedEnemny)
                 {
                     if (elite)
@@ -170,7 +171,7 @@ public class Enemy : MonoBehaviour
     {
         tryToAttack = true;
         yield return new WaitForSeconds(normalAttackCooldown);
-        if (playerRef != null)
+        if (playerRef != null && !isDead)
         {
             float minDist = 5;
             float fightDist = 2;
@@ -185,7 +186,6 @@ public class Enemy : MonoBehaviour
                     {
                         GetComponentInChildren<EnemyMeele>().currentState = EnemyMeele.states.FIGHT;
                         GetComponentInChildren<EnemyMeele>().setCharacterState();
-                        Debug.Log("Normal_Melee");
                     }
                     else
                     {

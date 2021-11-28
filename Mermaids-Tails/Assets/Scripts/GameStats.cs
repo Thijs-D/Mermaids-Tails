@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameStats : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class GameStats : MonoBehaviour
     private int currentMP;
     private int currentScore;
     private int coins;
+    private bool isDead;
+    public int countEnemies;
+    public Text scoreText;
     public Text coinText;
     public Text healthText;
     public Text skillText;
@@ -61,17 +65,30 @@ public class GameStats : MonoBehaviour
     // get damage
     public void GetDamage(int damage)
     {
-        if (currentHP - damage <= 0)
+        if (!isDead)
         {
-            currentHP = 0;
-            Destroy(playerRef);
+            if (currentHP - damage <= 0)
+            {
+                currentHP = 0;
+                isDead = true;
+                playerRef.GetComponent<Player>().isDead = true;
+                playerRef.GetComponent<Player>().currentState = Player.states.DEATH;
+                playerRef.GetComponent<Player>().setCharacterState();
+                StartCoroutine(Death());
+            }
+            else
+            {
+                currentHP -= damage;
+            }
+            healthSlider.value = getProcentualHealth();
+            healthText.text = currentHP + "/" + maximumHP;
         }
-        else
-        {
-            currentHP -= damage;
-        }
-        healthSlider.value = getProcentualHealth();
-        healthText.text = currentHP + "/" + maximumHP;
+    }
+
+    private IEnumerator Death()
+    {
+        yield return new WaitForSeconds(5);
+        SceneManager.LoadScene(0);
     }
     
     // heal character
@@ -115,5 +132,23 @@ public class GameStats : MonoBehaviour
     {
         coins -= amount;
         coinText.text = "Coins: " + coins;
+    }
+
+    public void IncreaseScore(bool elite)
+    {
+        countEnemies--;
+        if (elite)
+        {
+            currentScore += 10;
+        }
+        else
+        {
+            currentScore += 1;
+        }
+        scoreText.text = "Score: " + currentScore;
+        if (countEnemies <= 0)
+        {
+            StartCoroutine(Death());
+        }
     }
 }

@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 900082179937864457}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 722307065872544850}
   m_Father: {fileID: 0}
@@ -95,7 +95,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -2618880405158172571, guid: 2ed9e2e0044c9384181b31c8b2cb0cd2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -143,7 +143,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.1
-  m_Speed: 3.5
+  m_Speed: 5.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loot: {fileID: 8043931288934035441, guid: b5d9b704494de3345b4e375a9207849e, type: 3}
-  projectileType: {fileID: 5367210091496428964, guid: 29ef06cbbedc6284a8029c2f4d3f3f40, type: 3}
+  projectileType: {fileID: 5367210091496428964, guid: db280566306b0e84399c7a3eb6322265, type: 3}
   healthbar: {fileID: 9102983057274199434}
   healthSlider: {fileID: 8879646965078102846}
 --- !u!1 &1960166939192528795

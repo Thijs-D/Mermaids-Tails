@@ -5,41 +5,35 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    // public variables
     public GameObject OptionsPanel;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // OnClick StartGame Button
     public void StartGame()
     {
         // In Build-Settings are the correct order
         SceneManager.LoadScene(1);
     }
 
+    // OnClick Options Button
     public void Options()
     {
         OptionsPanel.SetActive(true);
     }
 
+    // OnClick Exit Button
     public void ExitGame()
     {
         Application.Quit();
     }
 
+    // OnClick Credits Button
     public void Credits()
     {
 
     }
 
+    // OnClick Return Button
     public void ReturnToMenu()
     {
         OptionsPanel.SetActive(false);
