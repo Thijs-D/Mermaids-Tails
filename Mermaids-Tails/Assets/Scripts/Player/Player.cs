@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public enum states { IDLE, WALK, FIGHTMELEE, FIGHTRANGED, DEATH };
     public states currentState;
     public GameObject projectileType;
+    public GameObject gameMenuUI;
     public bool isDead;
 
     // private variables
@@ -64,6 +65,11 @@ public class Player : MonoBehaviour
         // make a 3D Vector of Player Position and Z-Camera Position
         Vector3 currentCameraPosition = new Vector3(transform.position.x, transform.position.y, playerCamera.transform.position.z);
         playerCamera.transform.position = currentCameraPosition;
+    }
+
+    public void OnOpenGameMenu()
+    {
+        gameMenuUI.SetActive(true);
     }
 
     public void OnMovement(InputAction.CallbackContext value)
