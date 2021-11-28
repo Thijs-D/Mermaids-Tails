@@ -6,29 +6,32 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    // other variables
+    // public variables
     public GameObject loot;
+    public GameObject projectileType;
+    public GameObject healthbar;
+    public Slider healthSlider;
+    public AudioClip soundDmg;
+
+    // protected variables
     protected bool rangedEnemny;
     protected bool elite;
     protected float walkRange = 2;
     protected int worldBorder = 20;
     protected NavMeshAgent agent;
-
-    // variables for attack
+    protected bool doPlaySound;
     protected bool tryToAttack;
     protected bool doAttack;
     protected bool seePlayer;
     protected bool isDead;
     protected readonly int maximumHP;
-    protected int currentHP;
-    public GameObject projectileType;
+    protected int currentHP;    
     protected GameObject playerRef;
-    public GameObject healthbar;
-    public Slider healthSlider;
     protected int minimumDamage;
     protected int maximumDamage;
     protected float projectileForce;
     protected float normalAttackCooldown;
+    protected AudioSource currentSound;
 
     // construct an ranged enemy
     protected Enemy(bool pElite, int pHP, int pAttackSpeed, int pMinDmg, int pMaxDmg, float pProjectileForce)
@@ -62,6 +65,8 @@ public class Enemy : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        currentSound = gameObject.AddComponent<AudioSource>();
+        currentSound.clip = soundDmg;
     }
 
     // Update is called once per frame
@@ -89,12 +94,28 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void playSound()
+    {
+        if (!doPlaySound)
+        {
+            doPlaySound = true;
+            currentSound.Play();
+            StartCoroutine(soundEmu((int)currentSound.clip.length));
+        }
+    }
+
+    IEnumerator soundEmu(int duration)
+    {
+        yield return new WaitForSeconds(duration);
+        doPlaySound = false;
+    }
 
     // get damage
     public void GetDamage(int damage)
     {
         if (!isDead)
         {
+            playSound();
             healthbar.SetActive(true);
             if (currentHP - damage <= 0)
             {

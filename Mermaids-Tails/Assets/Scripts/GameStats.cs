@@ -6,8 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class GameStats : MonoBehaviour
 {
-    // variables
+    // public variables
+    public int countEnemies;
+    public Text scoreText;
+    public Text coinText;
+    public Text healthText;
+    public Text skillText;
+    public Slider healthSlider;
+    public Slider skillSlider;
     public static GameStats gameStatsRef;
+    public AudioClip waves;
+    public AudioClip coin;
+
+    // private variables
     private GameObject playerRef;
     private int maximumHP;
     private int currentHP;
@@ -16,17 +27,12 @@ public class GameStats : MonoBehaviour
     private int currentScore;
     private int coins;
     private bool isDead;
-    public int countEnemies;
-    public Text scoreText;
-    public Text coinText;
-    public Text healthText;
-    public Text skillText;
-    public Slider healthSlider;
-    public Slider skillSlider;
+    private AudioSource ambientSound;
+    private AudioSource currentSound;
 
     private void Awake()
     {
-        if (gameStatsRef != null)
+        /*if (gameStatsRef != null)
         {
             Destroy(gameStatsRef);
         }
@@ -34,13 +40,20 @@ public class GameStats : MonoBehaviour
         {
             gameStatsRef = this;
         }
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this);*/
+        gameStatsRef = this;
         playerRef = GameObject.Find("Player");
+        currentSound = gameObject.AddComponent<AudioSource>();
+        ambientSound = gameObject.AddComponent<AudioSource>();
+        ambientSound.clip = waves;
+        ambientSound.volume = 0.2f;
     }
 
     // Start is called before the first frame update
     void Start()
-    { 
+    {
+        ambientSound.Play();
+        ambientSound.loop = true;
         maximumHP = 100;
         maximumMP = 10;
         currentHP = maximumHP;
@@ -121,6 +134,8 @@ public class GameStats : MonoBehaviour
     {
         coins += amount;
         coinText.text = "Coins: " + coins;
+        currentSound.clip = coin;
+        currentSound.Play();
     }
     
     public int getCoins()

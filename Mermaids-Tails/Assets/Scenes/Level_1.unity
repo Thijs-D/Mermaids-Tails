@@ -1014,6 +1014,8 @@ MonoBehaviour:
   skillText: {fileID: 616641874}
   healthSlider: {fileID: 1874418432}
   skillSlider: {fileID: 2038357297}
+  waves: {fileID: 8300000, guid: 9efc041e5637d4044a645fa4410ba3e0, type: 3}
+  coin: {fileID: 8300000, guid: d9cfe9579a0e51c4b872322643da3c41, type: 3}
 --- !u!4 &615333417
 Transform:
   m_ObjectHideFlags: 0
