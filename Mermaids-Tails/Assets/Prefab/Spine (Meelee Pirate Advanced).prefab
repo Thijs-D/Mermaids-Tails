@@ -500,6 +500,7 @@ MonoBehaviour:
   projectileType: {fileID: 5367210091496428964, guid: 29ef06cbbedc6284a8029c2f4d3f3f40, type: 3}
   healthbar: {fileID: 2064848596653212626}
   healthSlider: {fileID: 6789866170351886152}
+  soundDmg: {fileID: 8300000, guid: 0cbe104ee8d73654cafa98e28ea8ad58, type: 3}
   sk: {fileID: 6687507547077865614}
   idle: {fileID: 11400000, guid: a47e130d40e9f1d40be95363e5fd4a26, type: 2}
   walking: {fileID: 11400000, guid: a4b6be10a2d57d548b42ac2b55b04ef5, type: 2}

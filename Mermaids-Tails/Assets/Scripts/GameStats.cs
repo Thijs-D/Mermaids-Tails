@@ -2,11 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameStats : MonoBehaviour
 {
-    // variables
+    // public variables
+    public int countEnemies;
+    public Text scoreText;
+    public Text coinText;
+    public Text healthText;
+    public Text skillText;
+    public Slider healthSlider;
+    public Slider skillSlider;
     public static GameStats gameStatsRef;
+    public AudioClip waves;
+    public AudioClip coin;
+
+    // private variables
     private GameObject playerRef;
     private int maximumHP;
     private int currentHP;
@@ -14,15 +26,13 @@ public class GameStats : MonoBehaviour
     private int currentMP;
     private int currentScore;
     private int coins;
-    public Text coinText;
-    public Text healthText;
-    public Text skillText;
-    public Slider healthSlider;
-    public Slider skillSlider;
+    private bool isDead;
+    private AudioSource ambientSound;
+    private AudioSource currentSound;
 
     private void Awake()
     {
-        if (gameStatsRef != null)
+        /*if (gameStatsRef != null)
         {
             Destroy(gameStatsRef);
         }
@@ -30,13 +40,20 @@ public class GameStats : MonoBehaviour
         {
             gameStatsRef = this;
         }
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this);*/
+        gameStatsRef = this;
         playerRef = GameObject.Find("Player");
+        currentSound = gameObject.AddComponent<AudioSource>();
+        ambientSound = gameObject.AddComponent<AudioSource>();
+        ambientSound.clip = waves;
+        ambientSound.volume = 0.2f;
     }
 
     // Start is called before the first frame update
     void Start()
-    { 
+    {
+        ambientSound.Play();
+        ambientSound.loop = true;
         maximumHP = 100;
         maximumMP = 10;
         currentHP = maximumHP;
@@ -61,17 +78,30 @@ public class GameStats : MonoBehaviour
     // get damage
     public void GetDamage(int damage)
     {
-        if (currentHP - damage <= 0)
+        if (!isDead)
         {
-            currentHP = 0;
-            Destroy(playerRef);
+            if (currentHP - damage <= 0)
+            {
+                currentHP = 0;
+                isDead = true;
+                playerRef.GetComponent<Player>().isDead = true;
+                playerRef.GetComponent<Player>().currentState = Player.states.DEATH;
+                playerRef.GetComponent<Player>().setCharacterState();
+                StartCoroutine(Death());
+            }
+            else
+            {
+                currentHP -= damage;
+            }
+            healthSlider.value = getProcentualHealth();
+            healthText.text = currentHP + "/" + maximumHP;
         }
-        else
-        {
-            currentHP -= damage;
-        }
-        healthSlider.value = getProcentualHealth();
-        healthText.text = currentHP + "/" + maximumHP;
+    }
+
+    private IEnumerator Death()
+    {
+        yield return new WaitForSeconds(5);
+        SceneManager.LoadScene(0);
     }
     
     // heal character
@@ -104,6 +134,8 @@ public class GameStats : MonoBehaviour
     {
         coins += amount;
         coinText.text = "Coins: " + coins;
+        currentSound.clip = coin;
+        currentSound.Play();
     }
     
     public int getCoins()
@@ -115,5 +147,23 @@ public class GameStats : MonoBehaviour
     {
         coins -= amount;
         coinText.text = "Coins: " + coins;
+    }
+
+    public void IncreaseScore(bool elite)
+    {
+        countEnemies--;
+        if (elite)
+        {
+            currentScore += 10;
+        }
+        else
+        {
+            currentScore += 1;
+        }
+        scoreText.text = "Score: " + currentScore;
+        if (countEnemies <= 0)
+        {
+            StartCoroutine(Death());
+        }
     }
 }

@@ -14,10 +14,13 @@ public class Player : MonoBehaviour
     public enum states { IDLE, WALK, FIGHTMELEE, FIGHTRANGED, DEATH };
     public states currentState;
     public GameObject projectileType;
+    public GameObject gameMenuUI;
+    public bool isDead;
 
     // private variables
     private int minimumDamage;
     private int maximumDamage;
+    private int meleeDamage;
     private float projectileForce;
     private bool doAttack = false;
     private float speed;
@@ -27,7 +30,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        setWeapon(10, 20, 3f);
+        setWeapon(50, 10, 20, 3f);
         dash = 0.3f;
         speed = 4;
         currentState = states.IDLE;
@@ -37,20 +40,23 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (direction != Vector2.zero && !doAttack)
+        if (!isDead)
         {
-            if (currentState != states.WALK)
+            if (direction != Vector2.zero && !doAttack)
             {
-                currentState = states.WALK;
+                if (currentState != states.WALK)
+                {
+                    currentState = states.WALK;
+                    setCharacterState();
+                }
+            }
+            else if (currentState != states.IDLE && !doAttack)
+            {
+                currentState = states.IDLE;
                 setCharacterState();
-            }         
+            }
+            MovePlayer();
         }
-        else if(currentState != states.IDLE && !doAttack)
-        {
-            currentState = states.IDLE;
-            setCharacterState();
-        }
-        MovePlayer();
     }
 
     // Updated ist called fixed by time
@@ -59,6 +65,11 @@ public class Player : MonoBehaviour
         // make a 3D Vector of Player Position and Z-Camera Position
         Vector3 currentCameraPosition = new Vector3(transform.position.x, transform.position.y, playerCamera.transform.position.z);
         playerCamera.transform.position = currentCameraPosition;
+    }
+
+    public void OnOpenGameMenu()
+    {
+        gameMenuUI.SetActive(true);
     }
 
     public void OnMovement(InputAction.CallbackContext value)
@@ -70,39 +81,62 @@ public class Player : MonoBehaviour
     {
         if (value.started)
         {
-            //doAttack = true;
-            GameObject currentProjectile = Instantiate(projectileType, transform.position, Quaternion.identity);
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            Vector2 currentPosition = transform.position;
-            Vector2 projectileDirection = (mousePosition - currentPosition).normalized;
-            currentProjectile.GetComponent<Rigidbody2D>().velocity = projectileDirection * projectileForce;
-            currentProjectile.GetComponent<Projectile>().damage = Random.Range(minimumDamage, maximumDamage);
-            //currentState = states.FIGHTRANGED;
-            //setCharacterState();
+            if (!isDead)
+            {
+                GameObject currentProjectile = Instantiate(projectileType, transform.position, Quaternion.identity);
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                Vector2 currentPosition = transform.position;
+                Vector2 projectileDirection = (mousePosition - currentPosition).normalized;
+                currentProjectile.GetComponent<Rigidbody2D>().velocity = projectileDirection * projectileForce;
+                currentProjectile.GetComponent<Projectile>().damage = Random.Range(minimumDamage, maximumDamage);
+            }
         }
+    }
+
+    public void OnMeleeAttack(InputAction.CallbackContext value)
+    {
+        if (value.started)
+        {
+            if (!doAttack && !isDead)
+            {
+                Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, 2f);
+                foreach (Collider2D collision in cols)
+                {
+                    if (collision.CompareTag("Enemy"))
+                    {
+                        collision.GetComponent<Enemy>().GetDamage(meleeDamage);
+                    }
+                }
+                doAttack = true;
+                currentState = states.FIGHTMELEE;
+                setCharacterState();
+            }
+        }        
     }
 
     public void OnDash(InputAction.CallbackContext value)
     {
         if (value.started)
         {
-            transform.Translate(dash * speed * direction);
+            if (!isDead)
+            {
+                transform.Translate(dash * speed * direction);
+            }           
         }
     }
 
     // set the player weapon ans weapon stats
-    public void setWeapon(int pMin, int pMax, float pForce)
+    public void setWeapon(int pMelee, int pMin, int pMax, float pForce)
     {
+        meleeDamage = pMelee;
         minimumDamage = pMin;
         maximumDamage = pMax;
         projectileForce = pForce;
-        Debug.Log(minimumDamage);
     }
 
     // move the player in game
     private void MovePlayer()
     {
-        //transform.Translate(speed * Time.deltaTime * direction);
         rb.velocity = new Vector2(direction.x * 5, direction.y * 5);
     }
 
@@ -121,20 +155,9 @@ public class Player : MonoBehaviour
         return projectileForce;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public int getMeleeDmg()
     {
-        if (collision.tag == "Wall")
-        {
-            //direction = Vector2.zero;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Wall")
-        {
-            //direction = Vector2.zero;
-        }
+        return meleeDamage;
     }
 
     // set character animation
@@ -182,7 +205,7 @@ public class Player : MonoBehaviour
                 }
             case states.DEATH:
                 {
-                    setAnimation(death, false, 1f);
+                    setAnimation(death, false, 0.5f);
                     break;
                 }
             default:

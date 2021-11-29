@@ -19,14 +19,16 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < amount; i++)
+        GameStats.gameStatsRef.countEnemies = amount;
+        for (int i = 0; i < amount; i++)
         {
             spawnPoint = transform.position;
             x = Random.Range(-0.9f, 0.9f);
             y = Random.Range(-0.9f, 0.9f);
             spawnPoint.x += x;
             spawnPoint.y += y;
-            int j = Random.Range(0, 23);
+            spawnPoint.z = 0;
+            int j = Random.Range(0, 25);
             if (j < 20 && j%2 == 0)
             {
                 Instantiate(enemyRanged, spawnPoint, Quaternion.identity);
@@ -35,7 +37,7 @@ public class Spawner : MonoBehaviour
             {
                 Instantiate(enemyMeele, spawnPoint, Quaternion.identity);
             }
-            else if (j < 21)
+            else if (j < 22)
             {
                 Instantiate(enemyRangedElite, spawnPoint, Quaternion.identity);
             }

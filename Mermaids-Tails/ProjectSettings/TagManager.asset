@@ -9,6 +9,7 @@ TagManager:
   - EnemyProjectile
   - Item
   - Wall
+  - Barrel
   layers:
   - Default
   - TransparentFX
