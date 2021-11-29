@@ -10,7 +10,7 @@ public class EnemyMeeleElite : Enemy
     public enum states { IDLE, WALK, FIGHT, BLOCK, DEATH };
     public states currentState;
 
-    protected EnemyMeeleElite() : base(true, 300, 5, 10, 20)
+    protected EnemyMeeleElite() : base(true, 500, 2, 10, 20)
     {
 
     }
@@ -81,7 +81,7 @@ public class EnemyMeeleElite : Enemy
                 }
             case states.DEATH:
                 {
-                    setAnimation(death, false, 1f);
+                    setAnimation(death, false, 0.5f);
                     break;
                 }
             default:
