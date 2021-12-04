@@ -16,7 +16,10 @@ public class GameStats : MonoBehaviour
     public Slider skillSlider;
     public static GameStats gameStatsRef;
     public AudioClip waves;
+    public AudioClip ambient;
     public AudioClip coin;
+    public AudioClip win;
+    public AudioClip lose;
 
     // private variables
     private GameObject playerRef;
@@ -27,7 +30,8 @@ public class GameStats : MonoBehaviour
     private int currentScore;
     private int coins;
     private bool isDead;
-    private AudioSource ambientSound;
+    private AudioSource ambientSound1;
+    private AudioSource ambientSound2;
     private AudioSource currentSound;
 
     private void Awake()
@@ -44,16 +48,20 @@ public class GameStats : MonoBehaviour
         gameStatsRef = this;
         playerRef = GameObject.Find("Player");
         currentSound = gameObject.AddComponent<AudioSource>();
-        ambientSound = gameObject.AddComponent<AudioSource>();
-        ambientSound.clip = waves;
-        ambientSound.volume = 0.2f;
+        ambientSound1 = gameObject.AddComponent<AudioSource>();
+        ambientSound2 = gameObject.AddComponent<AudioSource>();
+        ambientSound1.clip = waves;
+        ambientSound2.clip = ambient;
+        ambientSound1.volume = 0.2f;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        ambientSound.Play();
-        ambientSound.loop = true;
+        ambientSound1.Play();
+        ambientSound2.Play();
+        ambientSound1.loop = true;
+        ambientSound2.loop = true;
         maximumHP = 100;
         maximumMP = 10;
         currentHP = maximumHP;
@@ -87,7 +95,7 @@ public class GameStats : MonoBehaviour
                 playerRef.GetComponent<Player>().isDead = true;
                 playerRef.GetComponent<Player>().currentState = Player.states.DEATH;
                 playerRef.GetComponent<Player>().setCharacterState();
-                StartCoroutine(Death());
+                StartCoroutine(Death(true));
             }
             else
             {
@@ -98,9 +106,19 @@ public class GameStats : MonoBehaviour
         }
     }
 
-    private IEnumerator Death()
+    private IEnumerator Death(bool death)
     {
-        yield return new WaitForSeconds(5);
+        if (death)
+        {
+            currentSound.clip = lose;            
+        }
+        else
+        {
+            currentSound.clip = win;
+        }
+        currentSound.Play();
+        float fLength = currentSound.clip.length;
+        yield return new WaitForSeconds(fLength);
         SceneManager.LoadScene(0);
     }
     
@@ -163,7 +181,7 @@ public class GameStats : MonoBehaviour
         scoreText.text = "Score: " + currentScore;
         if (countEnemies <= 0)
         {
-            StartCoroutine(Death());
+            StartCoroutine(Death(false));
         }
     }
 }
