@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public states currentState;
     public GameObject projectileType;
     public GameObject gameMenuUI;
+    public AudioClip banana;
     public bool isDead;
 
     // private variables
@@ -26,10 +27,13 @@ public class Player : MonoBehaviour
     private float speed;
     private float dash;
     private Vector2 direction;
+    private AudioSource bananaAudio;
 
     // Start is called before the first frame update
     void Start()
     {
+        bananaAudio = gameObject.AddComponent<AudioSource>();
+        bananaAudio.clip = banana;
         setWeapon(50, 10, 20, 3f);
         dash = 0.3f;
         speed = 4;
@@ -89,6 +93,7 @@ public class Player : MonoBehaviour
                 Vector2 projectileDirection = (mousePosition - currentPosition).normalized;
                 currentProjectile.GetComponent<Rigidbody2D>().velocity = projectileDirection * projectileForce;
                 currentProjectile.GetComponent<Projectile>().damage = Random.Range(minimumDamage, maximumDamage);
+                bananaAudio.Play();
             }
         }
     }

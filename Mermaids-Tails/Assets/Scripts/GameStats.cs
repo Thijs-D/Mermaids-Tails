@@ -16,10 +16,12 @@ public class GameStats : MonoBehaviour
     public Slider skillSlider;
     public static GameStats gameStatsRef;
     public AudioClip waves;
+    public AudioClip wind;
     public AudioClip ambient;
     public AudioClip coin;
     public AudioClip win;
     public AudioClip lose;
+    public AudioClip dmg;
 
     // private variables
     private GameObject playerRef;
@@ -32,6 +34,7 @@ public class GameStats : MonoBehaviour
     private bool isDead;
     private AudioSource ambientSound1;
     private AudioSource ambientSound2;
+    private AudioSource ambientSound3;
     private AudioSource currentSound;
 
     private void Awake()
@@ -50,9 +53,12 @@ public class GameStats : MonoBehaviour
         currentSound = gameObject.AddComponent<AudioSource>();
         ambientSound1 = gameObject.AddComponent<AudioSource>();
         ambientSound2 = gameObject.AddComponent<AudioSource>();
+        ambientSound3 = gameObject.AddComponent<AudioSource>();
         ambientSound1.clip = waves;
         ambientSound2.clip = ambient;
+        ambientSound3.clip = wind;
         ambientSound1.volume = 0.2f;
+        ambientSound3.volume = 2f;
     }
 
     // Start is called before the first frame update
@@ -60,6 +66,7 @@ public class GameStats : MonoBehaviour
     {
         ambientSound1.Play();
         ambientSound2.Play();
+        ambientSound3.Play();
         ambientSound1.loop = true;
         ambientSound2.loop = true;
         maximumHP = 100;
@@ -100,6 +107,8 @@ public class GameStats : MonoBehaviour
             else
             {
                 currentHP -= damage;
+                currentSound.clip = dmg;
+                currentSound.Play();
             }
             healthSlider.value = getProcentualHealth();
             healthText.text = currentHP + "/" + maximumHP;

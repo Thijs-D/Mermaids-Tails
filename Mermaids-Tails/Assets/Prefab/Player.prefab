@@ -195,6 +195,7 @@ MonoBehaviour:
   currentState: 0
   projectileType: {fileID: 3523973136585348724, guid: c2254826b90fb9443a16f4a5488903a3, type: 3}
   gameMenuUI: {fileID: 0}
+  banana: {fileID: 0}
   isDead: 0
 --- !u!114 &8368607806089629716
 MonoBehaviour:
